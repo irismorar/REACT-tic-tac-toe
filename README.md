@@ -1,12 +1,17 @@
-# React + Vite
+**TIC-TAC-TOE**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Make a Tic-Tac-Toe game.
 
-Currently, two official plugins are available:
+Screenshots attached to this email show what the UI should look like.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Requirements:
+- the game is played by two players and Player 1 always goes first
+- the currently active player has their name colored and the other one has their name grayed out; each player has a different color (see screenshots)
+- when the active player has made their move, the game automatically switches to the other player
+- at any time before the game is over you can press a "restart" button to restart the game
+- when the game ends the following things happen:
+  1) it is no longer possible to click on the board to add an "x" or a "o" (obviously)
+  2) if a player has won then the winning combination of three "x" or three "o" is highlighted in white (see screenshot)
+  3) an appropriate message is shown - see screenshots; note that the message is slightly different when someone has won vs. if it's a draw
+  4) if a player has won then they remain shown in their color and the other player is grayed out
+  5) a "play again" button is shown that will restart the game when pressed
