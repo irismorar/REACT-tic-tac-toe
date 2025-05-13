@@ -1,86 +1,64 @@
+import { useReducer } from "react";
 import "./App.css";
+import { ticTacToeReducer } from "./state/ticTacToeReducer";
 import { initialState } from "./state/initialState";
-
-function getPlayer1Moves(state) {
-  const evenIndexMoves = state.filter((_, index) => index % 2 === 0);
-  return evenIndexMoves;
-}
-
-function hasPlayer1Won(state) {
-  const moves = getPlayer1Moves(state);
-  const winningMoves = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let winningMove of winningMoves) {
-    for (let elementMove of moves) {
-      if (winningMove.includes(elementMove)) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-}
-
-function getPlayer2Moves(state) {
-  const oddIndexMoves = state.filter((_, index) => index % 2 !== 0);
-  return oddIndexMoves;
-}
-
-function hasPlayer2Won(state) {
-  const moves = getPlayer2Moves(state);
-  const winningCombinations = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (const winningCombination of winningCombinations) {
-    if (movesIncludeCombination(moves, winningCombination)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function movesIncludeCombination(playerMoves, combination) {
-  for (const combinationPosition of combination) {
-    if (!playerMoves.includes(combinationPosition)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function hasGameBeenWon(state) {
-  return hasPlayer1Won(state) || hasPlayer2Won(state);
-}
-
-function isDraw(state) {
-  return state.length === 9 && !hasGameBeenWon(state);
-}
+import {
+  getPlayer1Moves,
+  getPlayer2Moves,
+  hasPlayer1Won,
+  hasPlayer2Won,
+  hasGameBeenWon,
+  isDraw,
+} from "./state/selectors";
 
 export default function App() {
+  const [state, dispatchAction] = useReducer(
+    ticTacToeReducer,
+    null,
+    initialState
+  );
+  const boardState = createBoardState(state);
+
   return (
     <main>
       <h1>TIC-TAC-TOE</h1>
       <section className="game_container">
         <div>Player 1</div>
-        <section></section>
+        <section>
+          {boardState.map((_, moveIndex) => {
+            if (boardState.includes(moveIndex)) {
+              return (
+                <div key={moveIndex}>
+                  <span
+                    style={{
+                      color: moveIndex % 2 === 0 ? "blue" : "salmon",
+                    }}
+                  >
+                    {moveIndex % 2 === 0 ? "x" : "o"}
+                  </span>
+                </div>
+              );
+            } else {
+              return <div key={moveIndex}></div>;
+            }
+          })}
+        </section>
         <div>Player 2</div>
       </section>
       <button>restart</button> {/* restart | play again */}
     </main>
   );
+}
+
+function createBoardState(state) {
+  const { moves } = state;
+  const boardState = [];
+  for (let i = 0; i <= 8; i++) {
+    if (typeof moves[i] === "number") {
+      boardState[i] = moves[i];
+    } else {
+      boardState[i] = null;
+    }
+  }
+  return boardState;
 }

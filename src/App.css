@@ -26,18 +26,27 @@ h1 {
 }
 
 .game_container>section {
-  border: 1px solid red;
-  width: 45.5rem;
-  height: 45.5rem;
+  width: 45rem;
+  height: 45rem;
   display: flex;
   flex-wrap: wrap;
   margin: 0 2em;
 }
 
 .game_container>section>div {
-  border: 1px solid blue;
+  border: 1px solid white;
   width: 15rem;
   height: 15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game_container>section>div>span {
+  font-weight: 600;
+  font-size: 7rem;
+  position: relative;
+  top: -1rem;
 }
 
 button {
