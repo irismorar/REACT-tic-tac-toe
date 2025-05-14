@@ -10,18 +10,37 @@ import {
 } from "./state/selectors";
 
 export default function App() {
-  const [{ moves }, dispatchAction] = useReducer(
+  const [state, dispatchAction] = useReducer(
     ticTacToeReducer,
     null,
     initialState
   );
+  const { moves } = state;
 
   return (
     <main>
       <h1>TIC-TAC-TOE</h1>
+      {hasPlayer1Won(state) && (
+        <div>
+          GAME OVER! <br />
+          Player 1 wins!
+        </div>
+      )}
+      {hasPlayer2Won(state) && (
+        <div>
+          GAME OVER! <br />
+          Player 2 wins!
+        </div>
+      )}
+      {isDraw(state) && (
+        <div>
+          GAME OVER! <br />
+          DRAW!
+        </div>
+      )}
       <section className="game_container">
         <div
-          className="player-name"
+          className="player_name"
           style={{ color: moves.length % 2 === 0 ? "blue" : "gray" }}
         >
           P1
@@ -46,6 +65,9 @@ export default function App() {
                 <div
                   key={cellIndex}
                   onClick={() => {
+                    if (hasPlayer1Won(state) || hasPlayer2Won(state)) {
+                      return;
+                    }
                     dispatchAction({
                       type: "ADD_MOVE",
                       payload: { cellIndex },
@@ -57,13 +79,21 @@ export default function App() {
           })}
         </section>
         <div
-          className="player-name"
+          className="player_name"
           style={{ color: moves.length % 2 !== 0 ? "salmon" : "gray" }}
         >
           P2
         </div>
       </section>
-      <button>restart</button> {/* restart | play again */}
+      <button
+        onClick={() => {
+          dispatchAction({
+            type: "RESTART",
+          });
+        }}
+      >
+        {hasGameBeenWon(state) || isDraw(state) ? "play again" : "restart"}
+      </button>{" "}
     </main>
   );
 }

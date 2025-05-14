@@ -1,5 +1,5 @@
 export function getPlayer1Moves(state) {
-  const evenIndexMoves = state.filter((_, index) => index % 2 === 0);
+  const evenIndexMoves = state.moves.filter((_, index) => index % 2 === 0);
   return evenIndexMoves;
 }
 
@@ -24,7 +24,7 @@ export function hasPlayer1Won(state) {
 }
 
 export function getPlayer2Moves(state) {
-  const oddIndexMoves = state.filter((_, index) => index % 2 !== 0);
+  const oddIndexMoves = state.moves.filter((_, index) => index % 2 !== 0);
   return oddIndexMoves;
 }
 
@@ -62,5 +62,5 @@ export function hasGameBeenWon(state) {
 }
 
 export function isDraw(state) {
-  return state.length === 9 && !hasGameBeenWon(state);
+  return state.moves.length === 9 && !hasGameBeenWon(state);
 }
