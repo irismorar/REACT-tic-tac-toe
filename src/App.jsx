@@ -3,8 +3,6 @@ import "./App.css";
 import { ticTacToeReducer } from "./state/ticTacToeReducer";
 import { initialState } from "./state/initialState";
 import {
-  getPlayer1Moves,
-  getPlayer2Moves,
   hasPlayer1Won,
   hasPlayer2Won,
   hasGameBeenWon,
@@ -12,53 +10,60 @@ import {
 } from "./state/selectors";
 
 export default function App() {
-  const [state, dispatchAction] = useReducer(
+  const [{ moves }, dispatchAction] = useReducer(
     ticTacToeReducer,
     null,
     initialState
   );
-  const boardState = createBoardState(state);
 
   return (
     <main>
       <h1>TIC-TAC-TOE</h1>
       <section className="game_container">
-        <div>Player 1</div>
+        <div
+          className="player-name"
+          style={{ color: moves.length % 2 === 0 ? "blue" : "gray" }}
+        >
+          P1
+        </div>
         <section>
-          {boardState.map((_, moveIndex) => {
-            if (boardState.includes(moveIndex)) {
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((cellIndex) => {
+            if (moves.includes(cellIndex)) {
               return (
-                <div key={moveIndex}>
+                <div key={cellIndex}>
                   <span
                     style={{
-                      color: moveIndex % 2 === 0 ? "blue" : "salmon",
+                      color:
+                        moves.indexOf(cellIndex) % 2 === 0 ? "blue" : "salmon",
                     }}
                   >
-                    {moveIndex % 2 === 0 ? "x" : "o"}
+                    {moves.indexOf(cellIndex) % 2 === 0 ? "x" : "o"}
                   </span>
                 </div>
               );
             } else {
-              return <div key={moveIndex}></div>;
+              return (
+                <div
+                  key={cellIndex}
+                  onClick={() => {
+                    dispatchAction({
+                      type: "ADD_MOVE",
+                      payload: { cellIndex },
+                    });
+                  }}
+                ></div>
+              );
             }
           })}
         </section>
-        <div>Player 2</div>
+        <div
+          className="player-name"
+          style={{ color: moves.length % 2 !== 0 ? "salmon" : "gray" }}
+        >
+          P2
+        </div>
       </section>
       <button>restart</button> {/* restart | play again */}
     </main>
   );
-}
-
-function createBoardState(state) {
-  const { moves } = state;
-  const boardState = [];
-  for (let i = 0; i <= 8; i++) {
-    if (typeof moves[i] === "number") {
-      boardState[i] = moves[i];
-    } else {
-      boardState[i] = null;
-    }
-  }
-  return boardState;
 }
