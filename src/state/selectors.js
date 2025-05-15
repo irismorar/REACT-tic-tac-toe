@@ -1,21 +1,22 @@
-export function getPlayer1Moves(state) {
+const WINNING_COMBINATIONS = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
+function getPlayer1Moves(state) {
   const evenIndexMoves = state.moves.filter((_, index) => index % 2 === 0);
   return evenIndexMoves;
 }
 
 export function hasPlayer1Won(state) {
   const moves = getPlayer1Moves(state);
-  const winningCombinations = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (const winningCombination of winningCombinations) {
+  for (const winningCombination of WINNING_COMBINATIONS) {
     if (movesIncludeCombination(moves, winningCombination)) {
       return true;
     }
@@ -23,24 +24,14 @@ export function hasPlayer1Won(state) {
   return false;
 }
 
-export function getPlayer2Moves(state) {
+function getPlayer2Moves(state) {
   const oddIndexMoves = state.moves.filter((_, index) => index % 2 !== 0);
   return oddIndexMoves;
 }
 
 export function hasPlayer2Won(state) {
   const moves = getPlayer2Moves(state);
-  const winningCombinations = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (const winningCombination of winningCombinations) {
+  for (const winningCombination of WINNING_COMBINATIONS) {
     if (movesIncludeCombination(moves, winningCombination)) {
       return true;
     }
@@ -63,4 +54,20 @@ export function hasGameBeenWon(state) {
 
 export function isDraw(state) {
   return state.moves.length === 9 && !hasGameBeenWon(state);
+}
+
+export function getWinningCombination(state) {
+  for (const winningCombination of WINNING_COMBINATIONS) {
+    if (
+      movesIncludeCombination(getPlayer1Moves(state), winningCombination) ||
+      movesIncludeCombination(getPlayer2Moves(state), winningCombination)
+    ) {
+      return winningCombination;
+    }
+  }
+  return [];
+}
+
+export function isGameOver(state) {
+  return hasGameBeenWon(state) || isDraw(state);
 }

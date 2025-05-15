@@ -7,6 +7,8 @@ import {
   hasPlayer2Won,
   hasGameBeenWon,
   isDraw,
+  getWinningCombination,
+  isGameOver,
 } from "./state/selectors";
 
 export default function App() {
@@ -20,28 +22,22 @@ export default function App() {
   return (
     <main>
       <h1>TIC-TAC-TOE</h1>
-      {hasPlayer1Won(state) && (
-        <div>
-          GAME OVER! <br />
-          Player 1 wins!
-        </div>
-      )}
-      {hasPlayer2Won(state) && (
-        <div>
-          GAME OVER! <br />
-          Player 2 wins!
-        </div>
-      )}
-      {isDraw(state) && (
-        <div>
-          GAME OVER! <br />
-          DRAW!
-        </div>
-      )}
+      <div>
+        {isGameOver(state) && "GAME OVER!"} <br />
+        {hasPlayer1Won(state) && "Player 1 wins!"}
+        {hasPlayer2Won(state) && "Player 2 wins!"}
+        {isDraw(state) && "DRAW!"}
+      </div>
       <section className="game_container">
         <div
           className="player_name"
-          style={{ color: moves.length % 2 === 0 ? "blue" : "gray" }}
+          style={{
+            color:
+              (moves.length % 2 === 0 && !hasGameBeenWon(state)) ||
+              hasPlayer1Won(state)
+                ? "blue"
+                : "gray",
+          }}
         >
           P1
         </div>
@@ -49,7 +45,16 @@ export default function App() {
           {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((cellIndex) => {
             if (moves.includes(cellIndex)) {
               return (
-                <div key={cellIndex}>
+                <div
+                  key={cellIndex}
+                  style={{
+                    backgroundColor: getWinningCombination(state).includes(
+                      cellIndex
+                    )
+                      ? "whitesmoke"
+                      : "transparent",
+                  }}
+                >
                   <span
                     style={{
                       color:
@@ -80,7 +85,13 @@ export default function App() {
         </section>
         <div
           className="player_name"
-          style={{ color: moves.length % 2 !== 0 ? "salmon" : "gray" }}
+          style={{
+            color:
+              (moves.length % 2 !== 0 && !hasGameBeenWon(state)) ||
+              hasPlayer2Won(state)
+                ? "salmon"
+                : "gray",
+          }}
         >
           P2
         </div>
@@ -93,7 +104,7 @@ export default function App() {
         }}
       >
         {hasGameBeenWon(state) || isDraw(state) ? "play again" : "restart"}
-      </button>{" "}
+      </button>
     </main>
   );
 }

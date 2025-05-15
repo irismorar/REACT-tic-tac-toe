@@ -17,10 +17,9 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid pink;
 }
 
-.game_container>section {
+.game_container > section {
   width: 45rem;
   height: 45rem;
   display: flex;
@@ -28,7 +27,7 @@ h1 {
   margin: 0 2em;
 }
 
-.game_container>section>div {
+.game_container > section > div {
   border: 1px solid white;
   width: 15rem;
   height: 15rem;
@@ -37,7 +36,7 @@ h1 {
   justify-content: center;
 }
 
-.game_container>section>div>span {
+.game_container > section > div > span {
   font-weight: 600;
   font-size: 7rem;
   position: relative;
@@ -53,4 +52,8 @@ button {
 div.player_name {
   font-size: 7rem;
   font-weight: bold;
+}
+
+main > div {
+  height: 8rem;
 }
