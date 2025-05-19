@@ -35,8 +35,8 @@ export default function App() {
             color:
               (moves.length % 2 === 0 && !hasGameBeenWon(state)) ||
               hasPlayer1Won(state)
-                ? "blue"
-                : "gray",
+                ? "#307ad2"
+                : "#444",
           }}
         >
           P1
@@ -58,7 +58,9 @@ export default function App() {
                   <span
                     style={{
                       color:
-                        moves.indexOf(cellIndex) % 2 === 0 ? "blue" : "salmon",
+                        moves.indexOf(cellIndex) % 2 === 0
+                          ? "#307ad2"
+                          : "salmon",
                     }}
                   >
                     {moves.indexOf(cellIndex) % 2 === 0 ? "x" : "o"}
@@ -70,7 +72,7 @@ export default function App() {
                 <div
                   key={cellIndex}
                   onClick={() => {
-                    if (hasPlayer1Won(state) || hasPlayer2Won(state)) {
+                    if (hasGameBeenWon(state)) {
                       return;
                     }
                     dispatchAction({
@@ -90,7 +92,7 @@ export default function App() {
               (moves.length % 2 !== 0 && !hasGameBeenWon(state)) ||
               hasPlayer2Won(state)
                 ? "salmon"
-                : "gray",
+                : "#444",
           }}
         >
           P2
